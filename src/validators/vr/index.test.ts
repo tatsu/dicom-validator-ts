@@ -3,9 +3,14 @@ import { vrValidatorRegistry, VRValidatorFn, getVRValidator } from './index.js';
 
 describe('VR Validator Registry', () => {
   it('should have validators for all required VR types', () => {
-    const expectedVRs = ['AE', 'AS', 'CS', 'DS', 'IS', 'LO', 'LT', 'SH', 'ST', 'UC', 'UR', 'UT', 'OB', 'OW'];
+    const expectedVRs = [
+      'AE', 'AS', 'AT', 'CS', 'DA', 'DS', 'FD', 'FL', 'IS',
+      'LO', 'LT', 'OB', 'OD', 'OF', 'OL', 'OW', 'PN',
+      'SH', 'SL', 'SQ', 'SS', 'ST', 'SV', 'TM', 'UC', 'UI',
+      'UL', 'UN', 'UR', 'US', 'UT', 'UV',
+    ];
     for (const vr of expectedVRs) {
-      expect(vrValidatorRegistry.has(vr)).toBe(true);
+      expect(vrValidatorRegistry.has(vr), `Missing validator for VR "${vr}"`).toBe(true);
     }
   });
 
@@ -29,7 +34,12 @@ describe('getVRValidator', () => {
   });
 
   it('should return the same function as the registry for each VR', () => {
-    const expectedVRs = ['AE', 'AS', 'CS', 'DS', 'IS', 'LO', 'LT', 'SH', 'ST', 'UC', 'UR', 'UT', 'OB', 'OW'];
+    const expectedVRs = [
+      'AE', 'AS', 'AT', 'CS', 'DA', 'DS', 'FD', 'FL', 'IS',
+      'LO', 'LT', 'OB', 'OD', 'OF', 'OL', 'OW', 'PN',
+      'SH', 'SL', 'SQ', 'SS', 'ST', 'SV', 'TM', 'UC', 'UI',
+      'UL', 'UN', 'UR', 'US', 'UT', 'UV',
+    ];
     for (const vr of expectedVRs) {
       expect(getVRValidator(vr)).toBe(vrValidatorRegistry.get(vr));
     }
@@ -336,6 +346,94 @@ describe('OW Validator', () => {
   const tag = '(7FE0,0010)';
 
   it('should return empty findings for any value (binary data)', () => {
+    expect(validate('anything', tag)).toEqual([]);
+    expect(validate('', tag)).toEqual([]);
+  });
+});
+
+describe('Numeric VR Validators (no-op)', () => {
+  const numericVRs = ['US', 'SS', 'UL', 'SL', 'FL', 'FD', 'SV', 'UV'];
+  const tag = '(0028,0002)';
+
+  for (const vr of numericVRs) {
+    describe(`${vr} Validator`, () => {
+      const validate = vrValidatorRegistry.get(vr)!;
+
+      it('should be registered in the validator registry', () => {
+        expect(validate).toBeDefined();
+        expect(typeof validate).toBe('function');
+      });
+
+      it('should return empty findings for any value (binary numeric data)', () => {
+        expect(validate('123', tag)).toEqual([]);
+        expect(validate('', tag)).toEqual([]);
+        expect(validate('anything', tag)).toEqual([]);
+      });
+    });
+  }
+});
+
+describe('Other binary VR Validators (no-op)', () => {
+  const binaryVRs = ['OD', 'OF', 'OL'];
+  const tag = '(7FE0,0010)';
+
+  for (const vr of binaryVRs) {
+    describe(`${vr} Validator`, () => {
+      const validate = vrValidatorRegistry.get(vr)!;
+
+      it('should be registered in the validator registry', () => {
+        expect(validate).toBeDefined();
+        expect(typeof validate).toBe('function');
+      });
+
+      it('should return empty findings for any value (binary data)', () => {
+        expect(validate('anything', tag)).toEqual([]);
+        expect(validate('', tag)).toEqual([]);
+      });
+    });
+  }
+});
+
+describe('AT Validator', () => {
+  const validate = vrValidatorRegistry.get('AT')!;
+  const tag = '(0008,1195)';
+
+  it('should be registered in the validator registry', () => {
+    expect(validate).toBeDefined();
+    expect(typeof validate).toBe('function');
+  });
+
+  it('should return empty findings for any value (binary tag data)', () => {
+    expect(validate('anything', tag)).toEqual([]);
+    expect(validate('', tag)).toEqual([]);
+  });
+});
+
+describe('SQ Validator', () => {
+  const validate = vrValidatorRegistry.get('SQ')!;
+  const tag = '(0008,1115)';
+
+  it('should be registered in the validator registry', () => {
+    expect(validate).toBeDefined();
+    expect(typeof validate).toBe('function');
+  });
+
+  it('should return empty findings for any value (sequence data)', () => {
+    expect(validate('anything', tag)).toEqual([]);
+    expect(validate('', tag)).toEqual([]);
+  });
+});
+
+describe('UN Validator', () => {
+  const validate = vrValidatorRegistry.get('UN')!;
+  const tag = '(0009,0010)';
+
+  it('should be registered in the validator registry', () => {
+    expect(validate).toBeDefined();
+    expect(typeof validate).toBe('function');
+  });
+
+  it('should return empty findings for any value (unknown VR)', () => {
     expect(validate('anything', tag)).toEqual([]);
     expect(validate('', tag)).toEqual([]);
   });

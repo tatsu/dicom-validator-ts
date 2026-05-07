@@ -238,10 +238,122 @@ function validateOB(_value: string, _tagId: string): ValidationFinding[] {
 }
 
 /**
+ * OD - Other Double
+ * Binary data — no string validation.
+ */
+function validateOD(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * OF - Other Float
+ * Binary data — no string validation.
+ */
+function validateOF(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * OL - Other Long
+ * Binary data — no string validation.
+ */
+function validateOL(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
  * OW - Other Word
  * Binary data — no string validation.
  */
 function validateOW(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * US - Unsigned Short
+ * 16-bit unsigned integer — binary data, no string validation.
+ */
+function validateUS(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * SS - Signed Short
+ * 16-bit signed integer — binary data, no string validation.
+ */
+function validateSS(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * UL - Unsigned Long
+ * 32-bit unsigned integer — binary data, no string validation.
+ */
+function validateUL(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * SL - Signed Long
+ * 32-bit signed integer — binary data, no string validation.
+ */
+function validateSL(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * FL - Floating Point Single
+ * 32-bit IEEE 754 float — binary data, no string validation.
+ */
+function validateFL(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * FD - Floating Point Double
+ * 64-bit IEEE 754 double — binary data, no string validation.
+ */
+function validateFD(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * SV - Signed Very Long
+ * 64-bit signed integer — binary data, no string validation.
+ */
+function validateSV(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * UV - Unsigned Very Long
+ * 64-bit unsigned integer — binary data, no string validation.
+ */
+function validateUV(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * AT - Attribute Tag
+ * Ordered pair of 16-bit unsigned integers — binary data, no string validation.
+ */
+function validateAT(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * SQ - Sequence of Items
+ * Sequence — no string validation.
+ */
+function validateSQ(_value: string, _tagId: string): ValidationFinding[] {
+  return [];
+}
+
+/**
+ * UN - Unknown
+ * Unknown VR — no string validation.
+ */
+function validateUN(_value: string, _tagId: string): ValidationFinding[] {
   return [];
 }
 
@@ -251,22 +363,36 @@ function validateOW(_value: string, _tagId: string): ValidationFinding[] {
 export const vrValidatorRegistry: Map<string, VRValidatorFn> = new Map<string, VRValidatorFn>([
   ['AE', validateAE],
   ['AS', validateAS],
+  ['AT', validateAT],
   ['CS', validateCS],
   ['DA', validateDA],
   ['DS', validateDS],
+  ['FD', validateFD],
+  ['FL', validateFL],
   ['IS', validateIS],
   ['LO', validateLO],
   ['LT', validateLT],
-  ['SH', validateSH],
-  ['ST', validateST],
-  ['UC', validateUC],
-  ['UR', validateUR],
-  ['UT', validateUT],
   ['OB', validateOB],
+  ['OD', validateOD],
+  ['OF', validateOF],
+  ['OL', validateOL],
   ['OW', validateOW],
-  ['TM', validateTM],
-  ['UI', validateUI],
   ['PN', validatePN],
+  ['SH', validateSH],
+  ['SL', validateSL],
+  ['SQ', validateSQ],
+  ['SS', validateSS],
+  ['ST', validateST],
+  ['SV', validateSV],
+  ['TM', validateTM],
+  ['UC', validateUC],
+  ['UI', validateUI],
+  ['UL', validateUL],
+  ['UN', validateUN],
+  ['UR', validateUR],
+  ['US', validateUS],
+  ['UT', validateUT],
+  ['UV', validateUV],
 ]);
 
 /**

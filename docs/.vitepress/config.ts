@@ -44,6 +44,9 @@ export default defineConfig({
           text: 'Error Reference',
           items: [
             { text: 'Validation Rules', link: '/errors/validation-rules' },
+            { text: 'VR Validation', link: '/errors/vr-validation' },
+            { text: 'VM Validation', link: '/errors/vm-validation' },
+            { text: 'IOD Validation', link: '/errors/iod-validation' },
             { text: 'Error Classes', link: '/errors/error-classes' },
           ],
         },

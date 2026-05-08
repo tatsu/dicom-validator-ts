@@ -42,7 +42,7 @@
     "type": "git",
     "url": "https://github.com/tatsu/dicom-validator-ts.git"
   },
-  "homepage": "https://github.com/tatsu/dicom-validator-ts#readme",
+  "homepage": "https://tatsu.github.io/dicom-validator-ts/",
   "bugs": {
     "url": "https://github.com/tatsu/dicom-validator-ts/issues"
   },

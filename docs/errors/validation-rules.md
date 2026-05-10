@@ -66,6 +66,7 @@ Validation rules for Information Object Definition (IOD) structure.
 | `iod-sop-class-unknown` | error | SOP Class UID is not recognized (not found in the dictionary) | Set a valid SOP Class UID or specify one via the sopClassUID option |
 | `iod-module-not-found` | warning | Module definition referenced by the IOD is not found in the dictionary | Verify that the module dictionary is up to date |
 | `iod-module-condition-indeterminate` | info | Inclusion condition for a conditional module cannot be evaluated | Verify that the related attributes needed for condition evaluation are present in the dataset |
+| `unexpected-tag` | warning | A tag present in the dataset is not defined in any module of the applicable IOD and is not a private tag or File Meta Information tag | Verify the tag is appropriate for the SOP Class or remove it |
 
 ## Tag Validation
 
@@ -101,4 +102,7 @@ const ruleCount = result.findings.reduce((acc, f) => {
   acc[f.rule] = (acc[f.rule] || 0) + 1;
   return acc;
 }, {} as Record<string, number>);
+
+// Filter unexpected tags
+const unexpectedTags = result.findings.filter(f => f.rule === 'unexpected-tag');
 ```

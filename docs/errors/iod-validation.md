@@ -21,6 +21,7 @@ IOD validation is performed by the `IODValidator` class, which:
 | `iod-sop-class-unknown` | error | SOP Class UID is not recognized |
 | `iod-module-not-found` | warning | Module definition referenced by the IOD is not in the dictionary |
 | `iod-module-condition-indeterminate` | info | Inclusion condition for a conditional module cannot be evaluated |
+| `unexpected-tag` | warning | A tag present in the dataset is not defined in any module of the applicable IOD |
 
 ## IOD-Level Rules
 
@@ -70,6 +71,38 @@ This rule is produced in two scenarios:
 **Scenario 2 — Condition evaluation is indeterminate:**
 - **Message:** `Condition for conditional module "{moduleName}" could not be fully evaluated`
 - **Trigger condition:** A conditional module has a condition expression, but the condition evaluator returns "indeterminate" — typically because the tags referenced in the condition are themselves absent from the dataset. The module is skipped and no error is raised.
+
+---
+
+### `unexpected-tag`
+
+- **Severity:** warning
+- **Message:** `Tag {tagId} is not defined in any module of the IOD`
+- **Tag:** The tag identifier of the offending element
+
+**Trigger condition:** A tag exists in the dataset that is not defined in any module of the applicable IOD, is not a private tag (odd group number), and is not a File Meta Information tag (group 0002). This typically indicates the dataset contains attributes that are not part of the SOP Class definition — they may be from a different modality, incorrectly encoded, or simply unnecessary.
+
+**Resolution:** Verify the tag is appropriate for the SOP Class or remove it from the dataset.
+
+## CT Image Storage — Validated Attributes
+
+The following tables document the attributes validated for CT Image Storage datasets, reflecting the module expansion in the dictionary.
+
+### General Series Module
+
+| Tag | Attribute Name | Type |
+|-----|---------------|------|
+| `(0018,5100)` | Patient Position | 2C |
+
+**Condition:** Required if Patient Orientation Code Sequence (0054,0410) is not present.
+
+### CT Image Module
+
+| Tag | Attribute Name | Type |
+|-----|---------------|------|
+| `(0020,0012)` | Acquisition Number | 2 |
+| `(0028,1052)` | Rescale Intercept | 2 |
+| `(0028,1053)` | Rescale Slope | 2 |
 
 ## Module Usage Types
 
@@ -177,6 +210,7 @@ const iodLevelRules = [
   'iod-sop-class-unknown',
   'iod-module-not-found',
   'iod-module-condition-indeterminate',
+  'unexpected-tag',
 ];
 
 // Module-level rules (produced by ModuleValidator)

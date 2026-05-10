@@ -33,3 +33,4 @@ Generated synthetic DICOM files for validation testing.
 | iod/iod-sop-class-unknown.dcm | iod-sop-class-unknown | error | SOP Class UID is set to an unrecognized value (9.9.9.9.9) |
 | tag/vr-unknown.dcm | vr-unknown | warning | Tag has a VR that is not registered in the validator |
 | tag/vr-undetermined.dcm | vr-undetermined | warning | Tag VR cannot be determined from element or dictionary |
+| iod/unexpected-tag.dcm | unexpected-tag | warning | Dataset contains a tag (Retrieve AE Title) not defined in any IOD module |

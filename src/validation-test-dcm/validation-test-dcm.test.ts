@@ -21,6 +21,7 @@ import {
   moduleTestFileSpecs,
   iodTestFileSpecs,
   tagTestFileSpecs,
+  unexpectedTagTestFileSpecs,
 } from './test-file-specs.js';
 import { isAvailable, validateFile } from './python-bridge.js';
 import { categorize, generateReport, formatReport } from './comparison-report.js';
@@ -278,6 +279,44 @@ describe('Validation Test DCM Files', () => {
     );
 
     test.each(tagTestFileSpecs)(
+      '$targetRule produces no unintended errors',
+      async (spec) => {
+        const filePath = resolve(FIXTURES_DIR, spec.relativePath);
+        const result = await validate(filePath, { verbosity: 'verbose' });
+
+        const errors = result.findings.filter((f) => f.severity === 'error');
+        expect(errors).toHaveLength(0);
+      },
+    );
+  });
+
+  describe('Unexpected Tag Detection', () => {
+    test.each(unexpectedTagTestFileSpecs)(
+      '$targetRule triggers expected warning finding for $expectedTag',
+      async (spec) => {
+        const filePath = resolve(FIXTURES_DIR, spec.relativePath);
+        const result = await validate(filePath, { verbosity: 'verbose' });
+
+        const findings = result.findings.map((f) => ({
+          rule: f.rule,
+          severity: f.severity,
+          tag: f.tag,
+          module: f.module,
+          message: f.message,
+        }));
+
+        // Unexpected tag detection produces warnings
+        expect(findings).toContainEqual(
+          expect.objectContaining({
+            rule: spec.targetRule,
+            severity: spec.expectedSeverity,
+            tag: spec.expectedTag,
+          }),
+        );
+      },
+    );
+
+    test.each(unexpectedTagTestFileSpecs)(
       '$targetRule produces no unintended errors',
       async (spec) => {
         const filePath = resolve(FIXTURES_DIR, spec.relativePath);

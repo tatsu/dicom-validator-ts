@@ -26,6 +26,7 @@
     "moduleName": "General Series",
     "attributes": [
       { "tag": "(0008,0060)", "name": "Modality", "type": "1" },
+      { "tag": "(0018,5100)", "name": "Patient Position", "type": "2C", "conditionText": "Required if Patient Orientation Code Sequence (0054,0410) is not present" },
       { "tag": "(0020,000E)", "name": "Series Instance UID", "type": "1" },
       { "tag": "(0020,0011)", "name": "Series Number", "type": "2" },
       { "tag": "(0008,0021)", "name": "Series Date", "type": "3" },
@@ -61,8 +62,11 @@
       { "tag": "(0008,0008)", "name": "Image Type", "type": "1" },
       { "tag": "(0018,0050)", "name": "Slice Thickness", "type": "2" },
       { "tag": "(0018,0060)", "name": "KVP", "type": "2" },
+      { "tag": "(0020,0012)", "name": "Acquisition Number", "type": "2" },
       { "tag": "(0028,1050)", "name": "Window Center", "type": "1C", "conditionText": "Required if Window Width (0028,1051) is present" },
-      { "tag": "(0028,1051)", "name": "Window Width", "type": "1C", "conditionText": "Required if Window Center (0028,1050) is present" }
+      { "tag": "(0028,1051)", "name": "Window Width", "type": "1C", "conditionText": "Required if Window Center (0028,1050) is present" },
+      { "tag": "(0028,1052)", "name": "Rescale Intercept", "type": "2" },
+      { "tag": "(0028,1053)", "name": "Rescale Slope", "type": "2" }
     ]
   },
   {

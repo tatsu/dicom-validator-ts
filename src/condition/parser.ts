@@ -33,6 +33,16 @@ export class ConditionParser {
   );
 
   /**
+   * Pattern: "Required if <Name> (GGGG,EEEE) is not present"
+   * Result: { type: 'tag_absent', tag: '(GGGG,EEEE)' }
+   * Note: "is not present" is semantically equivalent to "is absent"
+   */
+  private static readonly NOT_PRESENT_REGEX = new RegExp(
+    `${ConditionParser.NAME_PATTERN}\\s*${ConditionParser.TAG_PATTERN}\\s+is\\s+not\\s+present`,
+    'i'
+  );
+
+  /**
    * Pattern: "Required if <Name> (GGGG,EEEE) is not <value>"
    * Result: { type: 'tag_not_equals', tag: '(GGGG,EEEE)', value: '<value>' }
    */
@@ -83,6 +93,12 @@ export class ConditionParser {
     const absentMatch = text.match(ConditionParser.ABSENT_REGEX);
     if (absentMatch) {
       return { type: 'tag_absent', tag: `(${absentMatch[1]})` };
+    }
+
+    // Try "is not present" pattern (before "is not <value>", since it's more specific)
+    const notPresentMatch = text.match(ConditionParser.NOT_PRESENT_REGEX);
+    if (notPresentMatch) {
+      return { type: 'tag_absent', tag: `(${notPresentMatch[1]})` };
     }
 
     // Try "has a value of <value>" pattern (before equals, since it's more specific)

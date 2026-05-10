@@ -74,7 +74,18 @@ export class IODValidator {
     }
 
     // Step 3: Validate each module based on usage type
+    // Also collect all known module tags for unexpected tag detection
+    const knownTags = new Set<string>();
+
     for (const moduleRef of iodDef.modules) {
+      // Collect tags from this module's definition
+      const moduleDef = moduleRegistry.getModule(moduleRef.moduleId);
+      if (moduleDef) {
+        for (const attr of moduleDef.attributes) {
+          knownTags.add(attr.tag);
+        }
+      }
+
       const moduleFindings = this.validateModuleRef(
         dataset,
         moduleRef,
@@ -82,6 +93,36 @@ export class IODValidator {
         conditionEvaluator
       );
       findings.push(...moduleFindings);
+    }
+
+    // Step 4: Detect unexpected tags in the dataset
+    // Also add SOP Class UID to known tags since it's used for IOD lookup
+    knownTags.add(SOP_CLASS_UID_TAG);
+
+    for (const [tagId] of dataset.elements) {
+      // Skip tags already known from modules
+      if (knownTags.has(tagId)) {
+        continue;
+      }
+
+      // Skip private tags (odd group number) — handled by TagValidator
+      if (this.isPrivateTag(tagId)) {
+        continue;
+      }
+
+      // Skip File Meta Information tags (group 0002)
+      if (this.isFileMetaInfoTag(tagId)) {
+        continue;
+      }
+
+      // Tag is not in any module, not private, not meta info → unexpected
+      findings.push({
+        severity: 'warning',
+        tag: tagId,
+        module: '',
+        message: `Tag ${tagId} is not defined in any module of the IOD`,
+        rule: 'unexpected-tag',
+      });
     }
 
     return findings;
@@ -179,5 +220,29 @@ export class IODValidator {
           },
         ];
     }
+  }
+
+  /**
+   * Check if a tag is a private tag (odd group number).
+   * Private tags have group numbers like 0009, 0011, etc.
+   */
+  private isPrivateTag(tagId: string): boolean {
+    const match = tagId.match(/^\(([0-9A-Fa-f]{4}),/);
+    if (!match) {
+      return false;
+    }
+    const group = parseInt(match[1], 16);
+    return group % 2 !== 0;
+  }
+
+  /**
+   * Check if a tag is a File Meta Information tag (group 0002).
+   */
+  private isFileMetaInfoTag(tagId: string): boolean {
+    const match = tagId.match(/^\(([0-9A-Fa-f]{4}),/);
+    if (!match) {
+      return false;
+    }
+    return match[1].toUpperCase() === '0002';
   }
 }

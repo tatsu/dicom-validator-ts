@@ -210,11 +210,15 @@ describe('IODValidator', () => {
 
       const findings = validator.validate(dataset, iodRegistry, moduleRegistry, conditionEvaluator);
 
-      expect(findings).toHaveLength(1);
+      expect(findings).toHaveLength(2);
       expect(findings[0].severity).toBe('error');
       expect(findings[0].tag).toBe('(0018,0010)');
       expect(findings[0].module).toBe('Contrast/Bolus');
       expect(findings[0].rule).toBe('type1-missing');
+      // (0008,0060) is not in the contrast-bolus module → unexpected-tag
+      expect(findings[1].severity).toBe('warning');
+      expect(findings[1].tag).toBe('(0008,0060)');
+      expect(findings[1].rule).toBe('unexpected-tag');
     });
 
     it('should skip Conditional module when condition is false', () => {
@@ -241,7 +245,11 @@ describe('IODValidator', () => {
 
       const findings = validator.validate(dataset, iodRegistry, moduleRegistry, conditionEvaluator);
 
-      expect(findings).toHaveLength(0);
+      // (0008,0060) is not in the contrast-bolus module → unexpected-tag
+      expect(findings).toHaveLength(1);
+      expect(findings[0].severity).toBe('warning');
+      expect(findings[0].tag).toBe('(0008,0060)');
+      expect(findings[0].rule).toBe('unexpected-tag');
     });
 
     it('should produce info finding when Conditional module condition is indeterminate', () => {

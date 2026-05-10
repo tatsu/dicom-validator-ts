@@ -161,6 +161,23 @@ export class DictionaryLoader {
       return { type: 'tag_present', tag: `(${presentMatch[1].toUpperCase()})` };
     }
 
+    // Pattern: "Required if <Name> (GGGG,EEEE) is not present"
+    // Semantically equivalent to "is absent" — must be checked before "is <value>"
+    const notPresentMatch = text.match(
+      /\(([0-9A-Fa-f]{4},[0-9A-Fa-f]{4})\)\s+is\s+not\s+present/i
+    );
+    if (notPresentMatch) {
+      return { type: 'tag_absent', tag: `(${notPresentMatch[1].toUpperCase()})` };
+    }
+
+    // Pattern: "Required if <Name> (GGGG,EEEE) is absent"
+    const absentMatch = text.match(
+      /\(([0-9A-Fa-f]{4},[0-9A-Fa-f]{4})\)\s+is\s+absent/i
+    );
+    if (absentMatch) {
+      return { type: 'tag_absent', tag: `(${absentMatch[1].toUpperCase()})` };
+    }
+
     // Pattern: "Required if <Name> (GGGG,EEEE) has a value of more than <N>"
     const greaterThanMatch = text.match(
       /\(([0-9A-Fa-f]{4},[0-9A-Fa-f]{4})\)\s+has\s+a\s+value\s+of\s+more\s+than\s+(\d+)/i

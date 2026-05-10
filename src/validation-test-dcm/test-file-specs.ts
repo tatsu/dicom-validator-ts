@@ -246,7 +246,21 @@ export const tagTestFileSpecs: TestFileSpec[] = [
 ];
 
 /**
- * Complete array of all 29 test file specifications.
+ * IOD unexpected tag test file specifications (1 file).
+ * The file contains a tag not defined in any module of the IOD.
+ */
+export const unexpectedTagTestFileSpecs: TestFileSpec[] = [
+  {
+    relativePath: 'iod/unexpected-tag.dcm',
+    targetRule: 'unexpected-tag',
+    expectedSeverity: 'warning',
+    expectedTag: '(0008,0054)',
+    description: 'Dataset contains a tag (Retrieve AE Title) not defined in any IOD module',
+  },
+];
+
+/**
+ * Complete array of all 30 test file specifications.
  */
 export const allTestFileSpecs: TestFileSpec[] = [
   ...vrTestFileSpecs,
@@ -254,4 +268,5 @@ export const allTestFileSpecs: TestFileSpec[] = [
   ...moduleTestFileSpecs,
   ...iodTestFileSpecs,
   ...tagTestFileSpecs,
+  ...unexpectedTagTestFileSpecs,
 ];

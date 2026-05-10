@@ -33,6 +33,7 @@ const PYDICOM_RULE_PATTERNS: Record<string, (msg: string, tag?: string) => boole
   'iod-sop-class-unknown': (msg) => /unknown.*sop|sop.*unknown|not.*found/i.test(msg),
   'vr-unknown': (msg) => /unexpected|unknown/i.test(msg),
   'vr-undetermined': (msg) => /unexpected|unknown/i.test(msg),
+  'unexpected-tag': (msg) => /is unexpected/i.test(msg),
 };
 
 /**

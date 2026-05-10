@@ -146,6 +146,20 @@ export class DicomFileBuilder {
     // Pixel Data (7FE0,0010) - OW, minimal 1x1 pixel (2 bytes)
     this.dataset['7FE00010'] = { vr: 'OW', Value: [new Uint16Array([0]).buffer] };
 
+    // --- CT Image Module (Type 2) ---
+    // Rescale Intercept (0028,1052) - DS (CT Image, Type 2)
+    this.dataset['00281052'] = { vr: 'DS', Value: ['0'] };
+
+    // Rescale Slope (0028,1053) - DS (CT Image, Type 2)
+    this.dataset['00281053'] = { vr: 'DS', Value: ['1'] };
+
+    // Acquisition Number (0020,0012) - IS (CT Image, Type 2)
+    this.dataset['00200012'] = { vr: 'IS', Value: ['1'] };
+
+    // --- General Series Module (Type 2C) ---
+    // Patient Position (0018,5100) - CS (General Series, Type 2C)
+    this.dataset['00185100'] = { vr: 'CS', Value: ['HFS'] };
+
     // --- Type 2 attributes from new modules (empty or placeholder values) ---
     // Position Reference Indicator (0020,1040) - LO (Frame of Reference, Type 2)
     this.dataset['00201040'] = { vr: 'LO', Value: [] };

@@ -365,6 +365,29 @@ export async function generateTagTestFiles(outputDir: string): Promise<void> {
 }
 
 /**
+ * Generate unexpected tag test files.
+ *
+ * Creates:
+ * - unexpected-tag.dcm: Contains tag (0008,0054) Retrieve AE Title which is not
+ *   defined in any module of the CT Image Storage IOD, triggering unexpected-tag warning.
+ *
+ * @param outputDir - Directory where unexpected tag test files will be written
+ */
+export async function generateUnexpectedTagTestFiles(outputDir: string): Promise<void> {
+  const iodDir = resolve(outputDir, 'iod');
+
+  // unexpected-tag.dcm — add a tag not in any IOD module
+  // Tag (0008,0054) Retrieve AE Title is not defined in any module of the CT Image IOD.
+  // The validator should flag it as an unexpected tag.
+  {
+    const builder = new DicomFileBuilder();
+    builder.setBaseSopClass(CT_IMAGE_STORAGE_UID);
+    builder.addRawStringElement('(0008,0054)', 'AE', 'SOME_AE_TITLE');
+    await builder.writeFile(resolve(iodDir, 'unexpected-tag.dcm'));
+  }
+}
+
+/**
  * Generate manifest.json and README.md for the test fixtures directory.
  *
  * - manifest.json contains all TestFileSpec entries with a generation timestamp
@@ -432,6 +455,10 @@ async function main(): Promise<void> {
   console.log('Generating tag validation test files...');
   await generateTagTestFiles(OUTPUT_DIR);
   console.log('  ✓ 2 tag validation test files generated');
+
+  console.log('Generating unexpected tag test files...');
+  await generateUnexpectedTagTestFiles(OUTPUT_DIR);
+  console.log('  ✓ 1 unexpected tag test file generated');
 
   console.log('Generating manifest and README...');
   await generateManifestAndReadme(OUTPUT_DIR);

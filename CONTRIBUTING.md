@@ -4,7 +4,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 18 or later
+- [Node.js](https://nodejs.org/) 22 or later
 - npm (included with Node.js)
 
 ## Development Setup
@@ -12,7 +12,7 @@ Thank you for your interest in contributing! This document provides guidelines a
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-org/dicom-validator-ts.git
+git clone https://github.com/tatsu/dicom-validator-ts.git
 cd dicom-validator-ts
 ```
 

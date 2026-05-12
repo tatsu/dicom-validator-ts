@@ -189,8 +189,8 @@ npx dicom-validator-ts scan.dcm --sop-class 1.2.840.10008.5.1.4.1.1.2
 
 [ci-url]: https://github.com/tatsu/dicom-validator-ts/actions/workflows/ci.yml
 [ci-image]: https://github.com/tatsu/dicom-validator-ts/actions/workflows/ci.yml/badge.svg
-[coverage-url]: https://coveralls.io/github/tatsu/dicom-validator-ts?branch=master
-[coverage-image]: https://coveralls.io/repos/github/tatsu/dicom-validator-ts/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/tatsu/dicom-validator-ts?branch=main
+[coverage-image]: https://coveralls.io/repos/github/tatsu/dicom-validator-ts/badge.svg?branch=main
 [npm-url]: https://npmjs.org/package/dicom-validator-ts
 [npm-downloads-image]: https://img.shields.io/npm/dm/dicom-validator-ts.svg?style=flat
 [npm-version-image]: http://img.shields.io/npm/v/dicom-validator-ts.svg?style=flat

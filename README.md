@@ -181,7 +181,7 @@ npx dicom-validator-ts scan.dcm --sop-class 1.2.840.10008.5.1.4.1.1.2
 
 ## Requirements
 
-- Node.js 18 or later
+- Node.js 22 or later
 
 ## License
 
